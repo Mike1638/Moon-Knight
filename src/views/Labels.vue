@@ -1,21 +1,11 @@
 <template>
-  <div> Labels </div>
+  <div> Labels 
+      <Nav/>
+  </div>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-    };
-  },
-
-  components: {},
-
-  computed: {},
-
-  mounted: {},
-
-  methods: {}
 }
 
 </script>
