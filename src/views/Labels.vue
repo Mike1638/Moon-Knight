@@ -1,13 +1,9 @@
 <template>
-  <div> Labels 
-      <Nav/>
-  </div>
+  <div><Layout> 标签 </Layout></div>
 </template>
 
 <script>
-export default {
-}
-
+export default {};
 </script>
 <style lang='scss' scoped>
 </style>

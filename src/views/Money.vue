@@ -1,62 +1,18 @@
 <template>
-  <div class="nav-wrapper">
- <div class="content">
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
-     <p>Money</p>
- </div>
-  <Nav/>
+  <div>
+      <Layout> 
+          记账
+      </Layout>
   </div>
 </template>
 
 <script>
+import Layout from '@/components/Layout.vue'
 export default {
+  components: { Layout },
 }
 
 </script>
 <style lang='scss' scoped>
-.nav-wrapper{
-    border: 1px solid green;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-.content{
-    border: 1px solid blue;
-    flex-grow: 1;
-    overflow: auto;
-}
+
 </style>

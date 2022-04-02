@@ -1,6 +1,8 @@
 <template>
-  <div> statistics
-      <Nav/>
+  <div> 
+    <Layout>
+        统计
+    </Layout>
   </div>
 </template>
 
