@@ -1,47 +1,45 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button>新增标签</button>
+      <button @click="createtag">新增标签</button>
     </div>
     <ul class="current">
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
+      <li
+        v-for="tag in datasourse"
+        :key="tag"
+        @click="toggle(tag)"
+        :class="{ selected: selectedTag.indexOf(tag) >= 0 ? true : false }"
+      >
+        {{ tag }}
+      </li>
     </ul>
   </div>
 </template>
 
-<script>
-export default {};
+<script lang= "ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+@Component
+export default class Tags extends Vue {
+  @Prop(Array) datasourse: string[] | undefined;
+  selectedTag: string[] = [];
+  toggle(tag: string) {
+    const index = this.selectedTag.indexOf(tag);
+    if (index >= 0) {
+      this.selectedTag.splice(index, 1);
+    } else {
+      this.selectedTag.push(tag);
+    }
+  }
+  createtag(){
+    const name = window.prompt('请输入标签名')
+    if(name === ''){
+      window.alert('输入的标签名不能为空')
+    }else if(this.datasourse){
+      this.$emit('update:datasourse',[...this.datasourse,name])
+    }
+  }
+}
 </script>
 <style lang='scss' scoped>
 @import "~@/assets/style/helper.scss";
@@ -63,6 +61,10 @@ export default {};
       padding: 0 16px 0 16px;
       margin-right: 12px;
       margin-top: 4px;
+      &.selected {
+        background: darken($color: #333, $amount: 0.5);
+        color: white;
+      }
     }
   }
   .new button {
