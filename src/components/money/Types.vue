@@ -18,17 +18,13 @@ export default class Types extends Vue {
   //Number 告诉 Vue xxx 是个Number
   // xxx 属性名
   // number | undefined 就是 xxx的类型
-  selectType(type: string) {
+  selectType(type: string){
     if (type !== "-" && type !== "+") {
       throw new Error("type is unknown");
     } else {
       this.type = type;
     }
   }
-  created(){
-      console.log(this.xxx);
-  }
-
 }
 </script>
 
