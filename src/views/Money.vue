@@ -11,32 +11,37 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import Layout from "@/components/Layout.vue";
 import Notes from "@/components/money/Notes.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import Tags from "@/components/money/Tags.vue";
 import Types from "@/components/money/Types.vue";
-import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-type Recode = {
+import { modelList } from "@/models/modelList";
+import { tagModelList } from "@/models/tagListModel";
+
+const recodeList = modelList.fetch();
+const tagList = tagModelList.fetch();
+type RecodeItem = {
   tags: string[];
   notes: string;
   type: string;
   amount: number;
-  createAt?:Date 
+  createAt?: Date;
 };
 @Component({
   components: { Layout, NumberPad, Tags, Notes, Types },
 })
 export default class Money extends Vue {
-  recode: Recode = {
+  recode: RecodeItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  recodeList: Recode[] = JSON.parse(window.localStorage.getItem('recodeList') || '[]')
-  tags = ["衣", "食", "住", "行", "打游戏"];
+  recodeList: RecodeItem[] = recodeList; //****** */
+  tags = tagList;
   onUpdateTags(value: string[]) {
     this.recode.tags = value;
   }
@@ -46,16 +51,15 @@ export default class Money extends Vue {
   onUpdateOK(value: string) {
     this.recode.amount = parseFloat(value);
   }
-  setrecodeList(){
-    const recode2:Recode = JSON.parse(JSON.stringify(this.recode))
-    recode2.createAt = new Date()
+  setrecodeList() {
+    const recode2: RecodeItem = JSON.parse(JSON.stringify(this.recode));
+    recode2.createAt = new Date();
     this.recodeList.push(recode2);
-   console.log(this.recodeList);
-   
-}
+    console.log(this.recodeList);
+  }
   @Watch("recodeList")
   onRecodeListchanged() {
-    window.localStorage.setItem("recodeList", JSON.stringify(this.recodeList));
+    modelList.save(this.recodeList); //***** */
   }
 }
 </script>

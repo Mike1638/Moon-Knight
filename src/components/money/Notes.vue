@@ -14,7 +14,7 @@ import {Component,Watch} from "vue-property-decorator"
 export default class Notes extends Vue{
   value = ''
   @Watch('value')
-  onValueChange(value:string,oldVlaue:string){
+  onValueChange(value:string){
     this.$emit('update:value',value)
   }
 }
