@@ -1,14 +1,20 @@
+import clone from "@/lib/clone";
 const localStorageKeyName = "recordList";
 const modelList = {
-    clone(data:RecodeItem[]|RecodeItem){
-        JSON.parse(JSON.stringify(data))
-    },
+  data: [] as RecodeItem[],
   fetch() {
-    return JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]') as RecodeItem[];
+    return JSON.parse(
+      window.localStorage.getItem(localStorageKeyName) || "[]"
+    ) as RecodeItem[];
   },
-  save(data:RecodeItem[]) {
-    window.localStorage.setItem(localStorageKeyName, JSON.stringify(data));
+  save() {
+    window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
   },
+  create(recode:RecodeItem){
+    const recode2: RecodeItem = clone(recode) 
+    recode2.createAt = new Date();
+    this.data.push(recode2);
+  }
 };
 
 export { modelList };

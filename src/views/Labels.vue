@@ -7,7 +7,7 @@
         </router-link>
       </div>
       <div class="createTag-wrapper">
-        <button class="createTag" @click="cretaeTags">新建标签</button>
+        <Button class="createTag" @click="cretaeTags">新建标签</Button>
       </div>
     </Layout>
   </div>
@@ -17,9 +17,12 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { tagModelList } from "@/models/tagListModel";
-@Component
+import Button from "@/Button.vue"
+@Component({
+  components:{Button}
+})
 export default class Labels extends Vue {
-  tags = tagModelList.data;
+  tags = window.tagList;
   cretaeTags() {
     const name = window.prompt("请输入新的标签名：");
     if (name) {

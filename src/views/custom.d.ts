@@ -5,3 +5,7 @@ type RecodeItem = {
     amount: number;
     createAt?:Date 
   };
+
+  interface Window{
+    tagList:tag[]
+  }

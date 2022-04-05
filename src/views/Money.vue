@@ -3,7 +3,13 @@
     <Layout class-prefix="layout">
       <NumberPad @update:value="onUpdateOK" @setrecodeList="setrecodeList" />
       <Types :value.sync="recode.type" />
-      <Notes @update:value="onUpdateNotes" />
+      <div class="notes">
+        <FormItem
+          fileName="备注"
+          placeholder="请在这里输入备注"
+          @update:value="onUpdateNotes"
+        />
+      </div>
       <Tags :datasourse.sync="tags" @update:value="onUpdateTags" />
       {{ recodeList }}
     </Layout>
@@ -13,7 +19,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Layout from "@/components/Layout.vue";
-import Notes from "@/components/money/Notes.vue";
+import FormItem from "@/components/money/FormItem.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import Tags from "@/components/money/Tags.vue";
 import Types from "@/components/money/Types.vue";
@@ -22,7 +28,6 @@ import { modelList } from "@/models/modelList";
 import { tagModelList } from "@/models/tagListModel";
 
 const recodeList = modelList.fetch();
-const tagList = tagModelList.fetch();
 type RecodeItem = {
   tags: string[];
   notes: string;
@@ -31,7 +36,7 @@ type RecodeItem = {
   createAt?: Date;
 };
 @Component({
-  components: { Layout, NumberPad, Tags, Notes, Types },
+  components: { Layout, NumberPad, Tags, FormItem, Types },
 })
 export default class Money extends Vue {
   recode: RecodeItem = {
@@ -41,7 +46,7 @@ export default class Money extends Vue {
     amount: 0,
   };
   recodeList: RecodeItem[] = recodeList; //****** */
-  tags = tagList;
+  tags = window.tagList;
   onUpdateTags(value: string[]) {
     this.recode.tags = value;
   }
@@ -52,14 +57,12 @@ export default class Money extends Vue {
     this.recode.amount = parseFloat(value);
   }
   setrecodeList() {
-    const recode2: RecodeItem = JSON.parse(JSON.stringify(this.recode));
-    recode2.createAt = new Date();
-    this.recodeList.push(recode2);
-    console.log(this.recodeList);
+   modelList.create(this.recode)
   }
   @Watch("recodeList")
+  
   onRecodeListchanged() {
-    modelList.save(this.recodeList); //***** */
+    modelList.save(); //***** */
   }
 }
 </script>
@@ -68,6 +71,9 @@ export default class Money extends Vue {
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
+}
+.notes {
+  padding: 12px 0;
 }
 </style>
 

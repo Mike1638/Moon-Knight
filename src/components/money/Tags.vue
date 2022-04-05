@@ -6,11 +6,11 @@
     <ul class="current">
       <li
         v-for="tag in datasourse"
-        :key="tag"
+        :key="tag.id"
         @click="toggle(tag)"
         :class="{ selected: selectedTag.indexOf(tag) >= 0 ? true : false }"
       >
-        {{ tag }}
+        {{ tag.name }}
       </li>
     </ul>
   </div>
@@ -52,6 +52,7 @@ export default class Tags extends Vue {
   padding: 16px;
   display: flex;
   flex-direction: column-reverse;
+  background-color: #fff;
   > .current {
     display: flex;
     flex-wrap: wrap;
