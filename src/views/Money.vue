@@ -16,6 +16,8 @@
   </div>
 </template>
 
+
+
 <script lang="ts">
 import Vue from "vue";
 import Layout from "@/components/Layout.vue";
@@ -23,30 +25,34 @@ import FormItem from "@/components/money/FormItem.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import Tags from "@/components/money/Tags.vue";
 import Types from "@/components/money/Types.vue";
-import { Component, Watch } from "vue-property-decorator";
-import { modelList } from "@/models/modelList";
-import { tagModelList } from "@/models/tagListModel";
+import { Component } from "vue-property-decorator";
 
-const recodeList = modelList.fetch();
+
+
+
 type RecodeItem = {
   tags: string[];
   notes: string;
   type: string;
   amount: number;
   createAt?: Date;
-};
+}; // 此处声明的变量类型转移不到custom.d.ts  就是说在custom.d.ts中获取不到RecodeItem ?????
+
 @Component({
   components: { Layout, NumberPad, Tags, FormItem, Types },
 })
+
 export default class Money extends Vue {
   recode: RecodeItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
-  };
-  recodeList: RecodeItem[] = recodeList; //****** */
+  }; // 初始值
+  recodeList = window.recodeList; //****** */
+
   tags = window.tagList;
+
   onUpdateTags(value: string[]) {
     this.recode.tags = value;
   }
@@ -57,13 +63,11 @@ export default class Money extends Vue {
     this.recode.amount = parseFloat(value);
   }
   setrecodeList() {
-   modelList.create(this.recode)
+    window.createList(this.recode);
   }
-  @Watch("recodeList")
-  
-  onRecodeListchanged() {
-    modelList.save(); //***** */
-  }
+
+
+
 }
 </script>
 
@@ -77,7 +81,6 @@ export default class Money extends Vue {
 }
 </style>
 
-
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 </style>

@@ -14,6 +14,7 @@ const modelList = {
     const recode2: RecodeItem = clone(recode) 
     recode2.createAt = new Date();
     this.data.push(recode2);
+    this.save()
   }
 };
 
