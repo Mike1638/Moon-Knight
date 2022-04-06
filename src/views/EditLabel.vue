@@ -6,7 +6,7 @@
       <span class="rightIcon"></span>
     </div>
     <FormItem
-     :value="tag.name"
+     :value="currentTag.name"
       fileName="标签名"
       placeholder="请输入标签名"
       class="from-wrapper"
@@ -23,29 +23,34 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import FormItem from "@/components/money/FormItem.vue";
 import Button from "@/Button.vue";
+
 @Component({
   components: { FormItem, Button },
 })
 export default class EditLable extends Vue {
-  tag? :{id:string,name:string} = undefined;
+  get currentTag (){
+    return this.$store.state.currentTag
+  }
   created() {
-    this.tag = window.findTag(this.$route.params.id);
-    if (!this.tag) {
+    const id =  this.$route.params.id
+    this.$store.commit('fetchTags')
+    this.$store.commit('setCurrentTag',id)
+    if (!this.currentTag) {
        this.$router.replace("/404");
     } 
   }
+
   updatetag(name:string){
-    if(this.tag){
-     window.updateTag(this.tag.id,name)
+    if(this.currentTag){
+      const payload = {id:this.currentTag.id,name};
+      this.$store.commit('updateTag',payload);
     }
   }
+
   remove(){
-    if(this.tag){
-      if(window.removeTag(this.tag.id)){
-        this.$router.back();
-      }else{
-        window.alert('删除失败！')
-      }
+    if(this.currentTag){
+      this.$store.commit('removeTag',this.currentTag.id)
+      
     }
   }
   goBack(){
@@ -70,8 +75,6 @@ export default class EditLable extends Vue {
   > .rightIcon {
     width: 24px;
     height: 24px;
-  }
-  > .title {
   }
 }
 .from-wrapper {

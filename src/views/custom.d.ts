@@ -6,18 +6,41 @@ type RecodeItem = {
   createAt?: Date;
 };
 
-interface Window {
-  // tag
-  tagList: tag[];
-  findTag:(id:string)=>Tag
-  createTag: (name: string) => void;
-  removeTag: (id: string) => boolean;
-  updateTag: (
+
+type Tag = {
+  id: string;
+  name: string;
+};
+
+type TagModelList = {
+  data: Tag[];
+  fetch: () => Tag[];
+  save: () => void;
+  update: (
     id: string,
     name: string
-  ) => "success" | "not found" | "duplicated";
+  ) => "success" | "not found" | "duplicated" ;
+  remove: ({ id:string  }) => boolean;
+  create: (name: string) => "success" | "duplicated" | null | undefined;
+};
 
-  //recodeList
-  recodeList:RecodeItem[];
-  createList:(recode:RecodeItem)=>void;
+
+
+
+interface Window {
+  store:{
+// tag
+tagList: tag[];
+findTag:(id:string)=>Tag
+createTag: (name: string) => void;
+removeTag: (id: string) => boolean;
+updateTag: (
+  id: string,
+  name: string
+) => "success" | "not found" | "duplicated";
+
+//recodeList
+recodeList:RecodeItem[];
+createList:(recode:RecodeItem)=>void;
+  }
 }

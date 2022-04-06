@@ -7,27 +7,29 @@
         </router-link>
       </div>
       <div class="createTag-wrapper">
-        <Button class="createTag" @click="cretaeTags">新建标签</Button>
+        <Button class="createTag" @click="createTags">新建标签</Button>
       </div>
     </Layout>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Button from "@/Button.vue"
+import Button from "@/Button.vue";
+import { mixins } from "vue-class-component";
+import TagHelper from "@/mixins/TagHelper"
+
 @Component({
-  components:{Button}
+  components:{Button},
 })
-export default class Labels extends Vue {
-  tags = window.tagList;
-  cretaeTags() {
-    const name = window.prompt("请输入新的标签名：");
-    if (name) {
-    window.createTag(name) ; // 封装在window上
+export default class Labels extends mixins(TagHelper) {
+  get tags(){
+  return this.$store.state.tagList
   }
-}
+  beforeCreate(){
+    this.$store.commit('fetchTags')
+  }
+ 
 }
 </script>
 

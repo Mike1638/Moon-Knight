@@ -10,8 +10,7 @@
           @update:value="onUpdateNotes"
         />
       </div>
-      <Tags :datasourse.sync="tags" @update:value="onUpdateTags" />
-      {{ recodeList }}
+      <Tags/>
     </Layout>
   </div>
 </template>
@@ -40,6 +39,14 @@ type RecodeItem = {
 
 @Component({
   components: { Layout, NumberPad, Tags, FormItem, Types },
+  computed:{
+    recodeList(){
+      return this.$store.state.recodeList;
+    },
+    // tags(){
+    //   return this.$store.state.tags;
+    // }
+  }
 })
 
 export default class Money extends Vue {
@@ -49,9 +56,10 @@ export default class Money extends Vue {
     type: "-",
     amount: 0,
   }; // 初始值
-  recodeList = window.recodeList; //****** */
 
-  tags = window.tagList;
+  created(){
+    this.$store.commit('fetchRecords')
+  }
 
   onUpdateTags(value: string[]) {
     this.recode.tags = value;
@@ -63,7 +71,7 @@ export default class Money extends Vue {
     this.recode.amount = parseFloat(value);
   }
   setrecodeList() {
-    window.createList(this.recode);
+    this.$store.commit('createList',  this.recode);
   }
 
 
