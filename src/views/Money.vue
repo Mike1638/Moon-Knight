@@ -2,7 +2,7 @@
   <div>
     <Layout class-prefix="layout">
       <NumberPad @update:value="onUpdateOK" @setrecodeList="setrecodeList" />
-      <Types :value.sync="recode.type" />
+      <Tabs :value.sync="recode.type" :dataSource="typeList" />
       <div class="notes">
         <FormItem
           fileName="备注"
@@ -23,7 +23,8 @@ import Layout from "@/components/Layout.vue";
 import FormItem from "@/components/money/FormItem.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import Tags from "@/components/money/Tags.vue";
-import Types from "@/components/money/Types.vue";
+import Tabs from "@/components/Tabs.vue"
+import typeList from "@/constants/recordTypeList"
 import { Component } from "vue-property-decorator";
 
 
@@ -38,7 +39,7 @@ type RecodeItem = {
 }; // 此处声明的变量类型转移不到custom.d.ts  就是说在custom.d.ts中获取不到RecodeItem ?????
 
 @Component({
-  components: { Layout, NumberPad, Tags, FormItem, Types },
+  components: { Layout, NumberPad, Tags, FormItem, Tabs },
   computed:{
     recodeList(){
       return this.$store.state.recodeList;
@@ -50,6 +51,7 @@ type RecodeItem = {
 })
 
 export default class Money extends Vue {
+  typeList =typeList
   recode: RecodeItem = {
     tags: [],
     notes: "",

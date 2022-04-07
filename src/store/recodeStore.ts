@@ -17,7 +17,7 @@ const recodeStore = {
 
   createList (recode: RecodeItem) {
     const recode2: RecodeItem = clone(recode);
-    recode2.createAt = new Date();
+    recode2.createAt = new Date().toISOString();
     this.recodeList && this.recodeList.push(recode2);
     recodeStore.saveRecords();
   },

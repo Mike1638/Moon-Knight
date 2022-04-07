@@ -24,7 +24,7 @@ const store =  new Vuex.Store({
     },
     createList (state,recode: RecodeItem) {
       const recode2: RecodeItem = clone(recode);
-      recode2.createAt = new Date();
+      recode2.createAt = new Date().toISOString();
       state.recodeList.push(recode2);
       console.log(recode);
       store.commit('saveRecords')

@@ -1,11 +1,16 @@
+type Rootstate = {
+  recodeList: RecodeItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
+};
+
 type RecodeItem = {
   tags: string[];
   notes: string;
   type: string;
   amount: number;
-  createAt?: Date;
+  createAt?: string;
 };
-
 
 type Tag = {
   id: string;
@@ -16,31 +21,25 @@ type TagModelList = {
   data: Tag[];
   fetch: () => Tag[];
   save: () => void;
-  update: (
-    id: string,
-    name: string
-  ) => "success" | "not found" | "duplicated" ;
-  remove: ({ id:string  }) => boolean;
+  update: (id: string, name: string) => "success" | "not found" | "duplicated";
+  remove: ({ id: string }) => boolean;
   create: (name: string) => "success" | "duplicated" | null | undefined;
 };
 
-
-
-
 interface Window {
-  store:{
-// tag
-tagList: tag[];
-findTag:(id:string)=>Tag
-createTag: (name: string) => void;
-removeTag: (id: string) => boolean;
-updateTag: (
-  id: string,
-  name: string
-) => "success" | "not found" | "duplicated";
+  store: {
+    // tag
+    tagList: tag[];
+    findTag: (id: string) => Tag;
+    createTag: (name: string) => void;
+    removeTag: (id: string) => boolean;
+    updateTag: (
+      id: string,
+      name: string
+    ) => "success" | "not found" | "duplicated";
 
-//recodeList
-recodeList:RecodeItem[];
-createList:(recode:RecodeItem)=>void;
-  }
+    //recodeList
+    recodeList: RecodeItem[];
+    createList: (recode: RecodeItem) => void;
+  };
 }
