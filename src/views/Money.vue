@@ -44,9 +44,9 @@ type RecodeItem = {
     recodeList(){
       return this.$store.state.recodeList;
     },
-    // tags(){
-    //   return this.$store.state.tags;
-    // }
+    tags(){
+      return this.$store.state.tags;
+    }
   }
 })
 

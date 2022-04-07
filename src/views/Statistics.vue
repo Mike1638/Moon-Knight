@@ -2,17 +2,17 @@
   <div>
     <Layout>
       <Tabs classPrefix="type" :dataSource="typeList" :value.sync="type" />
-      <Tabs
+      <!-- <Tabs
         classPrefix="interval"
         :dataSource="intervalList"
         :value.sync="interval"
-      />
+      /> -->
         <ol>
-          <li v-for="(group,index) in result" :key="index">
-            <h3 class="title">{{group.title}}</h3>
+          <li v-for="(group,index) in result " :key="index">
+            <h3 class="title">{{beautify(group.title)}} <span>{{group.total}}</span></h3>
             <ol>
               <li class="record" v-for="item in group.items" :key="item.id">
-                  <span>{{tagString(item.Tags)}}</span> 
+                  <span>{{tagString(item.tags)}}</span> 
                   <span class="note">{{item.notes}}</span>
                   <span>￥{{item.amount}}</span>
                 </li>
@@ -50,37 +50,71 @@ import { Component } from "vue-property-decorator";
 import Tabs from "@/components/Tabs.vue";
 import typeList from "@/constants/recordTypeList";
 import intervalList from "@/constants/intervalList";
-
+import dayjs from 'dayjs'
+import clone from "@/lib/clone";
 type Tag = {
   id: string;
   name: string;
 };
+type Rootstate = {
+  recodeList: RecodeItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
+};
+
+type RecodeItem = {
+  tags: Tag[];
+  notes: string;
+  type: string;
+  amount: number;
+  createAt?: string;
+};
+
 
 @Component({
   components: { Tabs },
 })
 export default class Statistics extends Vue {
+  beautify(string:string){
+     const day = dayjs(string);
+     if(day.isSame(dayjs(),'day')){
+       return '今天'
+     }else if(day.isSame(dayjs().subtract(1,'day'),'day')){
+       return '昨天'
+     } else if(day.isSame(dayjs().subtract(2,'day'),'day')){
+       return '前天'
+     } else {
+       return day.format('YYYY年MM月DD日')
+     }
+  }
   tagString(tags:Tag[]){
-    return   tags.length === 0? 'wu' : tags.join('.');
+    console.log(tags);
+    
+    return   tags.length === 0? '无' : tags.join('.');
   }
   get recodeList() {
     return (this.$store.state as Rootstate).recodeList;
   }
   get result() {
+    type GroupList={title:string,total:number,items:RecodeItem[]}[]
     const { recodeList } = this;
+    const newRecordList = clone(recodeList).filter(r=>r.type === this.type).sort((a,b)=>dayjs(b.createAt).valueOf()-dayjs(a.createAt).valueOf())
+    if(newRecordList.length === 0){return [] as GroupList}
+    const groupList = [{'title':dayjs(newRecordList[0].createAt).format('YYYY/MM/DD'),total:0,items:[newRecordList[0]]}]
+     for(let i = 1;i<newRecordList.length;i++){
+        const current = newRecordList[i];
+        const last = groupList[groupList.length-1]
+        if(dayjs(last.title).isSame(dayjs(current.createAt),'day')){
+             last.items.push(current);
+        }else{
+            groupList.push({title:dayjs(current.createAt).format('YYYY/MM/DD'),total:0,items:[current]})
+        }
+     }
+     groupList.map(group=>{group.total = group.items.reduce((sum,item)=>sum+item.amount,0)})
 
-    type HashTableValue ={title:string ,items:RecodeItem[]}
-    const hashTable:{[key:string]:HashTableValue} = {};
-
-    for (let i = 0; i < recodeList.length; i++) {
-        const [data,time] =  recodeList[i].createAt!.split('T');
-
-        hashTable[data] = hashTable[data] || {title:data,items:[]}
-        hashTable[data].items.push(recodeList[i])
-   }
-    console.log(hashTable);
-    
-    return hashTable;
+     console.log(groupList);
+     
+     return  groupList
   }
   beforeCreate() {
     this.$store.commit("fetchRecords");
