@@ -61,7 +61,7 @@ type Tag = {
 })
 export default class Statistics extends Vue {
   tagString(tags:Tag[]){
-    return   tags;
+    return   tags.length === 0? 'wu' : tags.join('.');
   }
   get recodeList() {
     return (this.$store.state as Rootstate).recodeList;
