@@ -88,9 +88,9 @@ export default class Statistics extends Vue {
      }
   }
   tagString(tags:Tag[]){
-    console.log(tags);
-    
-    return   tags.length === 0? '无' : tags.join('.');
+  console.log(tags);
+  
+    return   tags.length === 0? '无' : tags[0].name;
   }
   get recodeList() {
     return (this.$store.state as Rootstate).recodeList;

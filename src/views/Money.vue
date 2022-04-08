@@ -10,7 +10,7 @@
           @update:value="onUpdateNotes"
         />
       </div>
-      <Tags/>
+      <Tags  @update:value='recode.tags = $event' />
     </Layout>
   </div>
 </template>
